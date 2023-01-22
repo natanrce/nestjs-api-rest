@@ -15,8 +15,10 @@ import { AuthService } from 'src/auth/auth.service';
 import { UserDto } from './dto/user.dto';
 import { CurrentUser } from './user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
+import { IsAuthorGuard } from './guards/author.guard';
 
 import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('users')
 export class UserController {
@@ -36,6 +38,8 @@ export class UserController {
     return this.userService.create(data);
   }
 
+  @UseGuards(IsAuthorGuard)
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async updateUser(
     @Body() data: CreateUserDto,
@@ -44,6 +48,8 @@ export class UserController {
     return this.userService.update(id, data);
   }
 
+  @UseGuards(IsAuthorGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async destroyUser(@Param('id') id: string) {
     return this.userService.destroy(id);
