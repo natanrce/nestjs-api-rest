@@ -8,9 +8,16 @@ import { PrismaService } from 'src/prisma';
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createUser(data: UserDto): Promise<User> {
+  async create(data: UserDto): Promise<User> {
     return this.prisma.user.create({
       data,
+    });
+  }
+
+  async update(id: string, data: UserDto): Promise<User> {
+    return this.prisma.user.update({
+      data,
+      where: { id },
     });
   }
 }
